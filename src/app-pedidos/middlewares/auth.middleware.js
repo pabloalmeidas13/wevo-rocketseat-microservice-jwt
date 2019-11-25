@@ -6,6 +6,7 @@ exports.tokenValidate = (req, res, next) =>
 
     if (token)
     {
+        console.log("(authMiddleware)   [ Solicitando autenticacao... ]")
         axios.post("http://localhost:4000/accounts/token/validate", {}, {
             headers: {
                 "x-rockeseat-token": token
@@ -16,9 +17,12 @@ exports.tokenValidate = (req, res, next) =>
             // -------------------------------
             // ENVIA PARA O PROXIMO "METODO"
             // -------------------------------
+            console.log("(authMiddleware)   [ Autenticado com Sucesso ]");
             next();
         })
-        .catch(function (err) {
+        .catch(function (err) 
+        {
+            console.log("(authMiddleware)   [ Erro na autenticação ]");
             res.status(401).json({
                 success: false,
                 message: "Token inválido!"
@@ -27,6 +31,7 @@ exports.tokenValidate = (req, res, next) =>
     }
     else
     {
+        console.log("(authMiddleware)   [ Token não informado ]");
         res.status(401).json({
             success: false,
             message: "Token não informado!"
